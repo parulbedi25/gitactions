@@ -21,6 +21,13 @@ jobs:
         id: read-description
         run: echo "::set-output name=description::$(cat description.txt)"
 
+      - name: Check Permissions
+        run: |
+          echo "Permissions available to this workflow:"
+          curl -X GET -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+               https://api.github.com/user/permissions
+
+               
       - name: Create Release
         id: create-release
         uses: actions/create-release@v1
