@@ -1,0 +1,36 @@
+name: Update Release Notes
+
+on:
+  push:
+    branches:
+      - main  # Change this to your branch name
+
+jobs:
+  update-release-notes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Read commit message
+        id: read-commit-message
+        run: echo "::set-output name=message::$(cat commit_message.txt)"
+
+      - name: Read description
+        id: read-description
+        run: echo "::set-output name=description::$(cat description.txt)"
+
+      - name: Create Release
+        ld: create release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Commit Message: ${{ steps.read-commit-message.outputs.message }}
+            Description: ${{ steps.read-description.outputs.description }}
+          draft: false
+          prerelease: false
