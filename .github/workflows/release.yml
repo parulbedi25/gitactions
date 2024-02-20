@@ -22,7 +22,7 @@ jobs:
         run: echo "::set-output name=description::$(cat description.txt)"
 
       - name: Create Release
-        ld: create release
+        id: create-release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
