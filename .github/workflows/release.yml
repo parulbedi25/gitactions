@@ -25,7 +25,7 @@ jobs:
       uses: actions/create-release@v1
       env:
         #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GITHUB_TOKEN: "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"
+        GITHUB_TOKEN: "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"
       with:
         tag_name: v1.0.0  # Specify your release tag here
         release_name: Release v1.0.0  # Specify your release name here
