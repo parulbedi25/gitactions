@@ -1,36 +1,71 @@
+# name: Update Release Notes
+
+# on:
+#   push:
+#     branches:
+#       - main  # Change this to your branch name
+
+# jobs:
+#   update-release-notes:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Check out repository
+#         uses: actions/checkout@v2
+
+#       - name: Read commit message
+#         id: read-commit-message
+#         run: echo "::set-output name=message::$(cat commit_message.txt)"
+
+#       - name: Read description
+#         id: read-description
+#         run: echo "::set-output name=description::$(cat description.txt)"
+
+#       - name: Create Release
+#         id: create-release
+#         uses: actions/create-release@v1
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         with:
+#           tag_name: ${{ github.ref }}
+#           release_name: Release ${{ github.ref }}
+#           body: |
+#             Commit Message: ${{ steps.read-commit-message.outputs.message }}
+#             Description: ${{ steps.read-description.outputs.description }}
+#           draft: false
+#           prerelease: false
+
+
+#           name: Generate Release Notes
+
 name: Update Release Notes
 
 on:
   push:
     branches:
-      - main  # Change this to your branch name
+      - main
 
 jobs:
-  update-release-notes:
+  generate_release_notes:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Read commit message
-        id: read-commit-message
-        run: echo "::set-output name=message::$(cat commit_message.txt)"
+      - name: Read content from README.md
+        id: read_readme
+        run: echo "::set-output name=content::$(cat README.md)"
 
-      - name: Read description
-        id: read-description
-        run: echo "::set-output name=description::$(cat description.txt)"
+      - name: Extract version from README.md
+        id: extract_version
+        run: echo "${{ steps.read_readme.outputs.content }}" 
 
-      - name: Create Release
-        id: create-release
-        uses: actions/create-release@v1
+      - name: Publish Release Notes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            Commit Message: ${{ steps.read-commit-message.outputs.message }}
-            Description: ${{ steps.read-description.outputs.description }}
-          draft: false
-          prerelease: false
+          VERSION: ${{ steps.extract_version.outputs }}
+        run: |
+          # Your script or command to publish release notes using the extracted version
+          # Example:
+          echo "Publishing release notes for version $VERSION"
