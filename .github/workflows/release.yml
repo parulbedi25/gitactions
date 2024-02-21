@@ -1,25 +1,72 @@
-name: Node.js CI
+# name: Update Release Notes
+
+# on:
+#   push:
+#     branches:
+#       - main  # Change this to your branch name
+
+# jobs:
+#   update-release-notes:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Check out repository
+#         uses: actions/checkout@v2
+
+#       - name: Read commit message
+#         id: read-commit-message
+#         run: echo "::set-output name=message::$(cat commit_message.txt)"
+
+#       - name: Read description
+#         id: read-description
+#         run: echo "::set-output name=description::$(cat description.txt)"
+
+#       - name: Create Release
+#         id: create-release
+#         uses: actions/create-release@v1
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         with:
+#           tag_name: ${{ github.ref }}
+#           release_name: Release ${{ github.ref }}
+#           body: |
+#             Commit Message: ${{ steps.read-commit-message.outputs.message }}
+#             Description: ${{ steps.read-description.outputs.description }}
+#           draft: false
+#           prerelease: false
+
+
+#           name: Generate Release Notes
+
+
+name: Generate Release Notes
+
 on:
   push:
-    branches: main
-  pull_request:
-    branches: main
-env:
-  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    branches:
+      - main
+
 jobs:
-  build:
+  generate_release_notes:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x, 18.x]
+
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test -- --watch=false --browsers=ChromeHeadless
-    - run: npx semantic-release
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Read content from README.md
+        id: read_readme
+        run: echo "::set-output name=content::$(cat README.md)"
+
+      - name: Extract version from README.md
+        id: extract_version
+        run: echo "${{ steps.read_readme.outputs.content }}" | grep -oP '(?<=Version:' )(\d+\.\d+\.\d+)'
+
+      - name: Publish Release Notes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.extract_version.outputs }}
+        run: |
+          # Your script or command to publish release notes using the extracted version
+          # Example:
+          echo "Publishing release notes for version $VERSION"
