@@ -1,84 +1,30 @@
-# name: Update Release Notes
-
-# on:
-#   push:
-#     branches:
-#       - main  # Change this to your branch name
-
-# jobs:
-#   update-release-notes:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Check out repository
-#         uses: actions/checkout@v2
-
-#       - name: Read commit message
-#         id: read-commit-message
-#         run: echo "::set-output name=message::$(cat commit_message.txt)"
-
-#       - name: Read description
-#         id: read-description
-#         run: echo "::set-output name=description::$(cat description.txt)"
-
-#       - name: Create Release
-#         id: create-release
-#         uses: actions/create-release@v1
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#         with:
-#           tag_name: ${{ github.ref }}
-#           release_name: Release ${{ github.ref }}
-#           body: |
-#             Commit Message: ${{ steps.read-commit-message.outputs.message }}
-#             Description: ${{ steps.read-description.outputs.description }}
-#           draft: false
-#           prerelease: false
-
-
-#           name: Generate Release Notes
-
-
-name: Publish Release Notes
-
+name: 'Create a new release note'
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*'
 
 jobs:
-  publish_release_notes:
+  create-release-note:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    # - name: Setup Node.js
-    #   uses: actions/setup-node@v1
-    #   with:
-    #     node-version: '20.x'  # Specify the Node.js version you want to install
-
-    # - name: Install dependencies
-    #   run: npm install
-
-    - name: Read Release Notes
-      id: read_release_notes
-      run: |
-        # Example: Read release notes from a file
-        RELEASE_NOTES=$(cat README.md)
-        echo "::set-output name=notes::$RELEASE_NOTES"
-
-
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: v1.0.0  # Specify your release tag here
-        release_name: Release v1.0.0  # Specify your release name here
-        body: ${{ steps.read_release_notes.outputs.notes }}  # Use the release notes from the previous step
-        draft: false
-        prerelease: false
-
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Generated content
+        uses: ./
+        id: gen_note
+        with:
+          kind: default
+          tag-pattern: v*
+          current-tag: ${{ github.ref_name }}
+      - name: Create a new release note
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          body: ${{ steps.gen_note.outputs.summary }}
+          draft: false
+          prerelease: false
