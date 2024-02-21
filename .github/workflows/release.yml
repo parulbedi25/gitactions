@@ -60,12 +60,12 @@ jobs:
 
       - name: Extract version from README.md
         id: extract_version
-        run: echo "${{ steps.read_readme.outputs.content }}" | grep -oP '(?<=Version:' )(\d+\.\d+\.\d+)
+        run: echo "${{ steps.read_readme.outputs.content }}"
 
       - name: Publish Release Notes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSION: ${{ steps.extract_version.outputs }}
+       
         run: |
           # Your script or command to publish release notes using the extracted version
           # Example:
