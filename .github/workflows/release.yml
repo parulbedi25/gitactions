@@ -6,29 +6,24 @@ on:
       - main
 
 jobs:
-  publish_release_notes:
+  create-release-notes:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - uses: actions/checkout@master
+      - name: Create Release Notes
+        uses: docker://decathlon/release-notes-generator-action:2.0.1
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          OUTPUT_FOLDER: temp_release_notes
+          USE_MILESTONE_TITLE: "true"
 
-    - name: Read Release Notes
-      id: read_release_notes
-      run: |
-        # Example: Read release notes from a file
-        RELEASE_NOTES=$(cat README.md)
-        echo "::set-output name=notes::$RELEASE_NOTES"
-
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GITHUB_TOKEN: "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"
-      with:
-        tag_name: v1.0.0  # Specify your release tag here
-        release_name: Release v1.0.0  # Specify your release name here
-        body: ${{ steps.read_release_notes.outputs.notes }}  # Use the release notes from the previous step
-        draft: false
-        prerelease: false
+      - name: Upload Release Notes to Wiki
+        uses: docker://decathlon/wiki-page-creator-action:latest
+        env:
+          ACTION_MAIL: YOUR_EMAIL
+          ACTION_NAME: NAME_OF_THE_USER_WHO_PUBLISH
+          GH_PAT: "${{ secrets.GITHUB_TOKEN }}"
+          MD_FOLDER: temp_release_notes
+          OWNER: parul
+          REPO_NAME: gitactions
+          SKIP_MD: README.md
