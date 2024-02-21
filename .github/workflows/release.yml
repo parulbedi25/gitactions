@@ -1,38 +1,34 @@
-name: Publish Release Notes
+name: Create a new release note
 
 on:
   push:
     branches:
       - main
 
-
 jobs:
-
-  docker:
+  create-release-note:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Set up Docker
-        uses: crazy-max/ghaction-setup-docker@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
-  create-release-notes:
-    needs: docker
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - name: Create Release Notes
-        uses: docker://decathlon/release-notes-generator-action:2.0.1
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          OUTPUT_FOLDER: temp_release_notes
+      - name: Generated content
+        id: gen_note
+        uses: ./
+        with:
+          kind: default
+          tag-pattern: v*
+          current-tag: ${{ github.ref }}
 
-      - name: Upload Release Notes to Wiki
-        uses: docker://decathlon/wiki-page-creator-action:latest
+      - name: Create a new release note
+        uses: softprops/action-gh-release@v1
         env:
-          ACTION_MAIL: YOUR_EMAIL
-          ACTION_NAME: NAME_OF_THE_USER_WHO_PUBLISH
-          GH_PAT: "${{ secrets.GITHUB_TOKEN }}"
-          MD_FOLDER: temp_release_notes
-          OWNER: parul
-          REPO_NAME: gitactions
-          SKIP_MD: README.md
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          name: Release ${{ github.ref }}
+          body: ${{ steps.gen_note.outputs.summary }}
+          draft: false
+          prerelease: false
