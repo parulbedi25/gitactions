@@ -56,17 +56,31 @@ jobs:
 
       - name: Read content from README.md
         id: read_readme
-        run: echo "::set-output name=content::$(cat README.md)"
+        #run: echo "::set-output name=content::$(cat README.md)"
+        run: RELEASE_NOTES=$(cat release_notes.md)
+         echo "::set-output name=notes::$RELEASE_NOTES"
 
       - name: Extract version from README.md
         id: extract_version
         run: echo "${{ steps.read_readme.outputs.content }}"
 
-      - name: Publish Release Notes
+      # - name: Publish Release Notes
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+       
+      #   run: |
+      #     # Your script or command to publish release notes using the extracted version
+      #     # Example:
+      #     echo "Publishing release notes for version $VERSION"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-       
-        run: |
-          # Your script or command to publish release notes using the extracted version
-          # Example:
-          echo "Publishing release notes for version $VERSION"
+        with:
+          tag_name: v1.0.0
+          release_name: Release v1.0.0
+          body: ${{ steps.read_readme.outputs.content }}
+          draft: false
+          prerelease: false
