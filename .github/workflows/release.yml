@@ -14,8 +14,9 @@ jobs:
       -
         name: Set up Docker
         uses: crazy-max/ghaction-setup-docker@v3
-        
+
   create-release-notes:
+    needs: docker
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
