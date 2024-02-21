@@ -39,7 +39,7 @@
 #           name: Generate Release Notes
 
 
-name: Generate Release Notes
+name: Publish Release Notes
 
 on:
   push:
@@ -47,26 +47,29 @@ on:
       - main
 
 jobs:
-  generate_release_notes:
+  publish_release_notes:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Read content from README.md
-        id: read_readme
-        run: echo "::set-output name=content::$(cat README.md)"
+    - name: Read Release Notes
+      id: read_release_notes
+      run: |
+        # Example: Read release notes from a file
+        RELEASE_NOTES=$(cat release_notes.md)
+        echo "::set-output name=notes::$RELEASE_NOTES"
 
-      - name: Extract version from README.md
-        id: extract_version
-        run: echo "${{ steps.read_readme.outputs.content }}" | grep -oP '(?<=Version:' )(\d+\.\d+\.\d+)'
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v1.0.0  # Specify your release tag here
+        release_name: Release v1.0.0  # Specify your release name here
+        body: ${{ steps.read_release_notes.outputs.notes }}  # Use the release notes from the previous step
+        draft: false
+        prerelease: false
 
-      - name: Publish Release Notes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSION: ${{ steps.extract_version.outputs }}
-        run: |
-          # Your script or command to publish release notes using the extracted version
-          # Example:
-          echo "Publishing release notes for version $VERSION"
