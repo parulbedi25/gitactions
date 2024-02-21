@@ -1,4 +1,4 @@
-name: Create a new release note
+name: Publish Release Notes
 
 on:
   push:
@@ -6,29 +6,28 @@ on:
       - main
 
 jobs:
-  create-release-note:
+  publish_release_notes:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Generated content
-        id: gen_note
-        uses: ./
-        with:
-          kind: default
-          tag-pattern: v*
-          current-tag: ${{ github.ref }}
+    - name: Read Release Notes
+      id: read_release_notes
+      run: |
+        # Example: Read release notes from a file
+        RELEASE_NOTES=$(cat README.md)
+        echo "::set-output name=notes::$RELEASE_NOTES"
 
-      - name: Create a new release note
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          name: Release ${{ github.ref }}
-          body: ${{ steps.gen_note.outputs.summary }}
-          draft: false
-          prerelease: false
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v1.0.0  # Specify your release tag here
+        release_name: Release v1.0.0  # Specify your release name here
+        body: ${{ steps.read_release_notes.outputs.notes }}  # Use the release notes from the previous step
+        draft: false
+        prerelease: false
