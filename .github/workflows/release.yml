@@ -60,7 +60,7 @@ jobs:
 
       - name: Extract version from README.md
         id: extract_version
-        run: echo "${{ steps.read_readme.outputs.content }}" | grep -oP '(?<=Version: )(\d+\.\d+\.\d+)'
+        run: echo "${{ steps.read_readme.outputs.content }}" | grep -oP '(?<=Version:' )(\d+\.\d+\.\d+)
 
       - name: Publish Release Notes
         env:
