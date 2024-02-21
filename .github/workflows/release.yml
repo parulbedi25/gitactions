@@ -88,7 +88,7 @@ jobs:
       - name: Get Latest Tag
         id: get_latest_tag
         run: |
-          latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1) 2>/dev/null || echo "v0.0.0")
+          latest_tag=$(git describe --tags $(git rev-list --tags --max-count=1)) 2>/dev/null
           echo "::set-output name=latest_tag::$latest_tag"
 
       - name: Increment Tag
