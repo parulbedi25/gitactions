@@ -66,6 +66,7 @@ jobs:
         id: extract_version
         run: echo "${{ steps.read_readme.outputs.content }}"
 
+        
       # - name: Publish Release Notes
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
