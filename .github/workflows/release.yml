@@ -108,9 +108,9 @@ jobs:
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          tag_name: ${{ steps.increment_tag.outputs.content }}
-          release_name: Release ${{ steps.increment_tag.outputs.current_tag }}
+        with:
+          tag_name: ${{ steps.increment_tag.outputs.next_tag }}
+          release_name: Release ${{ steps.increment_tag.outputs.next_tag }}
           body: ${{ steps.read_readme.outputs.content }}
           draft: false
           prerelease: false
-          
