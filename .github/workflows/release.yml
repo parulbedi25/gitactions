@@ -119,5 +119,3 @@ jobs:
           body: |
             Commit Message: ${{ github.event.head_commit.message }}
             README Content: ${{ steps.read_readme.outputs.content }}
-            draft: false
-            prerelease: false
