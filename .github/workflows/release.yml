@@ -102,7 +102,6 @@ jobs:
             patch=$((patch+1))
             next_tag="$major.$minor.$patch"
             echo "::set-output name=next_tag::$next_tag"
-
   
       - name: Create Release
         id: create_release
