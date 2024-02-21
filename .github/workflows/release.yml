@@ -73,14 +73,38 @@ jobs:
       #     # Example:
       #     echo "Publishing release notes for version $VERSION"
 
+      # - name: Create Release
+      #   id: create_release
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: v1.0.1
+      #     release_name: Release v1.0.0
+      #     body: ${{ steps.read_readme.outputs.content }}
+      #     draft: false
+      #     prerelease: false
+
+      - name: Increment Tag
+        id: increment_tag
+        run: |
+            current_tag="${{ steps.get_latest_tag.outputs.latest_tag }}"
+            IFS='.' read -r -a parts <<< "$current_tag"
+            major="${parts[0]}"
+            minor="${parts[1]}"
+            patch="${parts[2]}"
+            patch=$((patch+1))
+            next_tag="$major.$minor.$patch"
+            echo "::set-output name=next_tag::$next_tag"
+    
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v1.0.1
-          release_name: Release v1.0.0
+          with:
+          tag_name: ${{ steps.increment_tag.outputs.next_tag }}
+          release_name: Release ${{ steps.increment_tag.outputs.next_tag }}
           body: ${{ steps.read_readme.outputs.content }}
           draft: false
           prerelease: false
