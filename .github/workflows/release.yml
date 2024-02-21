@@ -61,11 +61,12 @@ jobs:
         RELEASE_NOTES=$(cat README.md)
         echo "::set-output name=notes::$RELEASE_NOTES"
 
+        
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: "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"
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: v1.0.0  # Specify your release tag here
         release_name: Release v1.0.0  # Specify your release name here
