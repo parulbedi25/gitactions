@@ -116,8 +116,8 @@ jobs:
           tag_name: ${{ steps.increment_tag.outputs.next_tag }}
           release_name: Release ${{ steps.increment_tag.outputs.next_tag }}
          # body: ${{ steps.read_readme.outputs.content }}
-         body: |
-          Commit Message: ${{ github.event.head_commit.message }}
-          README Content: ${{ steps.read_readme.outputs.content }}
-          draft: false
-          prerelease: false
+          body: |
+            Commit Message: ${{ github.event.head_commit.message }}
+            README Content: ${{ steps.read_readme.outputs.content }}
+            draft: false
+            prerelease: false
