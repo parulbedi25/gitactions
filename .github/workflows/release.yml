@@ -1,5 +1,4 @@
 name: Generate Release Notes
-
 on:
   push:
     branches:
