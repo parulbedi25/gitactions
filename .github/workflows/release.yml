@@ -52,4 +52,5 @@ jobs:
           release_name: Release ${{ steps.increment_tag.outputs.next_tag }}
           body: |
             Commit Message: ${{ github.event.head_commit.message }}
-            CHANGELOG Content: ${{ steps.read_changelog.outputs.content }}
+            CHANGELOG Content: |
+                            ${{ steps.read_changelog.outputs.content }}
