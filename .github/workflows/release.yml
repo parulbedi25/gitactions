@@ -15,14 +15,14 @@ jobs:
           fetch-depth: 0
 
       - name: Read content from md file
-        id: read_readme
+        id: read_changelog
         run: |
-          README_CONTENT=$(cat README.md)
-          echo "::set-output name=content::$README_CONTENT"
+          CHANGELOG_CONTENT=$(cat CHANGELOG.md)
+          echo "::set-output name=content::$CHANGELOG_CONTENT"
 
-      - name: Extract version from README.md
-        id: extract_version
-        run: echo "${{ steps.read_readme.outputs.content }}"
+      # - name: Extract version from README.md
+      #   id: extract_version
+      #   run: echo "${{ steps.read_readme.outputs.content }}"
 
       - name: Get Latest Tag
         id: get_latest_tag
@@ -52,4 +52,4 @@ jobs:
           release_name: Release ${{ steps.increment_tag.outputs.next_tag }}
           body: |
             Commit Message: ${{ github.event.head_commit.message }}
-            README Content: ${{ steps.read_readme.outputs.content }}
+            CHANGELOG Content: ${{ steps.read_changelog.outputs.content }}
