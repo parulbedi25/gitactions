@@ -55,6 +55,10 @@ jobs:
           # echo "::set-output name=content::$data"
 
 
+          CHANGELOG_CONTENT=$(cat CHANGELOG.md | tr '\n' '\n')
+          echo "::set-output name=content::$CHANGELOG_CONTENT"
+
+
           #  CHANGELOG_CONTENT=""
           #  while IFS= read -r line || [ -n "$line" ]; do
           #  CHANGELOG_CONTENT="$CHANGELOG_CONTENT$line"$'\n'
