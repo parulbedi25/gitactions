@@ -124,3 +124,7 @@ jobs:
           body: |
             Commit Message: ${{ github.event.head_commit.message }}
             CHANGELOG Content: ${{ steps.read_changelog.outputs.content }}
+
+      - name: Create or Overwrite CHANGELOG.md
+        run: |
+            echo "# Changelog" > CHANGELOG.md
