@@ -21,7 +21,8 @@ jobs:
            while IFS= read -r line || [ -n "$line" ]; do
            CHANGELOG_CONTENT="$CHANGELOG_CONTENT$line"$'\n'
            done < "CHANGELOG.md"
-           echo "::set-output name=content::$CHANGELOG_CONTENT"
+
+           echo "::set-output name=content::$(printf '%s' "$CHANGELOG_CONTENT")"
 
 
 
