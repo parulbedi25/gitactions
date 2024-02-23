@@ -57,7 +57,6 @@ jobs:
 
 
           CHANGELOG_CONTENT=$(<CHANGELOG.md | while IFS= read -r line; do echo "$line"; done)
-          echo "helo + $CHANGELOG_CONTENT"
           echo "::set-output name=content::$CHANGELOG_CONTENT"
 
 
