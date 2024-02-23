@@ -8,9 +8,4 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 
 ![image](https://i.imgur.com/ydnAi5N.png)
 ![gif](https://i.imgur.com/RmJPeCl.gif)
-![video](https://www.youtube.com/watch?v=nvPOUdz5PL4)
-
-<p align="center">
-  <img src="https://i.imgur.com/ydnAi5N.png" width="350" title="hover text">
-  <img src="https://www.youtube.com/watch?v=nvPOUdz5PL4" width="350" alt="accessibility text">
-</p>
+![video](youtube.com/watch?v=nvPOUdz5PL4)
