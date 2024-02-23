@@ -17,7 +17,6 @@ jobs:
       - name: Read content from md file
         id: read_changelog
         run: |
-
           # IFS=''
           # while read data; do
           # echo "$data"
@@ -37,7 +36,8 @@ jobs:
 
           while IFS= read -r line; do
           echo "$line"
-          CHANGELOG_CONTENT+="$line"$'\n'
+          # CHANGELOG_CONTENT+="$line"$'\n'
+          CHANGELOG_CONTENT+="$line"
           done < CHANGELOG.md
           echo "::set-output name=content::$CHANGELOG_CONTENT"
 
