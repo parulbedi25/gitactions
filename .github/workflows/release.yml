@@ -37,7 +37,7 @@ jobs:
           while IFS= read -r line; do
           echo "$line"
           # CHANGELOG_CONTENT+="$line"$'\n'
-          CHANGELOG_CONTENT+="$line"
+          CHANGELOG_CONTENT+="$line"\n
           done < CHANGELOG.md
           echo "::set-output name=content::$CHANGELOG_CONTENT"
 
