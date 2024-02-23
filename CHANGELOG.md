@@ -6,5 +6,6 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 
 <p>Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.</p>
 
-![image](https://i.imgur.com/ydnAi5N.png width="500" height="500")
-![video](https://i.imgur.com/RmJPeCl.gif width="500" height="500")
+![image](https://i.imgur.com/ydnAi5N.png)
+![gif](https://i.imgur.com/RmJPeCl.gif)
+![video](https://www.youtube.com/watch?v=nvPOUdz5PL4)
