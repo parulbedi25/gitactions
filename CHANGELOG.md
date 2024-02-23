@@ -1,4 +1,5 @@
-The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.
+The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. 
+
 # Week 1 — App Containerization
 ## Learned about Docker and Dockerfile, and how it works (its layer by layer architecture)
 ### Host OS/ Guest OS Concept
