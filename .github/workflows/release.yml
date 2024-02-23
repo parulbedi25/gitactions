@@ -56,7 +56,7 @@ jobs:
 
 
 
-          CHANGELOG_CONTENT=$(cat CHANGELOG.md | tr '\n' '<br>')
+          CHANGELOG_CONTENT=$(cat CHANGELOG.md | tr '\n' '<br')
           echo "::set-output name=content::$CHANGELOG_CONTENT"
 
           # IFS=''
