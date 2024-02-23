@@ -8,4 +8,3 @@ Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are 
 
 ![image](https://i.imgur.com/ydnAi5N.png)
 ![video](https://i.imgur.com/RmJPeCl.gif)
-

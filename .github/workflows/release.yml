@@ -17,6 +17,12 @@ jobs:
       - name: Read content from md file
         id: read_changelog
         run: |
+           CHANGELOG_CONTENT=""
+           while IFS= read -r line || [ -n "$line" ]; do
+           CHANGELOG_CONTENT="$CHANGELOG_CONTENT$line"$'\n'
+           done < "CHANGELOG.md"
+
+           echo "::set-output name=content::$(printf '%s' "$CHANGELOG_CONTENT")"
 
           # while IFS= read -r line; do
           # echo "$line"
@@ -57,8 +63,8 @@ jobs:
           # CHANGELOG_CONTENT=$(cat CHANGELOG.md)
           # echo "::set-output name=content::$CHANGELOG_CONTENT"
 
-          CHANGELOG_CONTENT=$(cat CHANGELOG.md | tr '\n' '&')
-          echo "::set-output name=content::$CHANGELOG_CONTENT"
+          # CHANGELOG_CONTENT=$(cat CHANGELOG.md | tr '\n' '&')
+          # echo "::set-output name=content::$CHANGELOG_CONTENT"
 
           # IFS=''
           # while read data; do
@@ -74,6 +80,16 @@ jobs:
           # CHANGELOG_CONTENT=$(cat CHANGELOG.md | base64)
           # echo "::set-output name=content::$CHANGELOG_CONTENT"
           # CHANGELOG_CONTENT=$(cat CHANGELOG.md | tr '\n' '\n')
+          # echo "::set-output name=content::$CHANGELOG_CONTENT"
+          # CHANGELOG_CONTENT=$(cat CHANGELOG.md | while IFS= read -r line; do echo "$line"; done)
+          # echo "::set-output name=content::$CHANGELOG_CONTENT"
+          # cat filename.txt | while IFS= read -r line; do echo "$line"; done
+          # CHANGELOG_CONTENT=$(head -n 1 CHANGELOG.md)
+          # echo "::set-output name=content::$CHANGELOG_CONTENT"
+
+          # CHANGELOG_CONTENT=$(cat CHANGELOG.md | base64)
+          # echo "::set-output name=content::$CHANGELOG_CONTENT"
+          # CHANGELOG_CONTENT=$(cat CHANGELOG.md | tr '\n' '%')
           # echo "::set-output name=content::$CHANGELOG_CONTENT"
           # CHANGELOG_CONTENT=$(cat CHANGELOG.md | while IFS= read -r line; do echo "$line"; done)
           # echo "::set-output name=content::$CHANGELOG_CONTENT"
