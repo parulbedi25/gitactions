@@ -18,6 +18,8 @@ jobs:
         id: read_changelog
         run: |
 
+          CHANGELOG_CONTENT=$(sed ':a;N;$!ba;s/\n/<br>/g' CHANGELOG.md)
+          echo "::set-output name=content::$CHANGELOG_CONTENT"
 
           # while IFS= read -r line; do
           # echo "$line"
@@ -57,8 +59,7 @@ jobs:
 
 
           #CHANGELOG_CONTENT=$(cat CHANGELOG.md | tr '\n' '<br>')
-          CHANGELOG_CONTENT=$(sed ':a;N;$!ba;s/\n/<br>/g' CHANGELOG.md)
-          echo "::set-output name=content::$CHANGELOG_CONTENT"
+          
 
           # IFS=''
           # while read data; do
@@ -125,6 +126,3 @@ jobs:
             Commit Message: ${{ github.event.head_commit.message }}
             CHANGELOG Content: ${{ steps.read_changelog.outputs.content }}
 
-      - name: Create or Overwrite CHANGELOG.md
-        run: |
-            echo "# Changelog" > CHANGELOG.md
