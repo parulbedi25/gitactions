@@ -41,7 +41,6 @@ jobs:
           # done
           # echo "::set-output name=content::$data"
 
-
           # CHANGELOG_CONTENT=$(cat CHANGELOG.md)
           # echo "::set-output name=content::$CHANGELOG_CONTENT"
 
